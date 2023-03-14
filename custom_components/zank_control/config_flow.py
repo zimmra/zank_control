@@ -2,7 +2,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME, CONF_IP_ADDRESS
 
-from . import DOMAIN
+DOMAIN = "zank_control"
 
 DATA_SCHEMA = vol.Schema(
     {

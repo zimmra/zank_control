@@ -18,7 +18,6 @@ from homeassistant.components.remote import RemoteEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 DOMAIN = "zank_control"
-CONF_NAME = "name"
 
 # Load CMD_MAPPING from the JSON file
 with open("cmd_mapping.json", "r") as f:
