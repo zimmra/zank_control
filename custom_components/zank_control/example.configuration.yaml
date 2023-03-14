@@ -1,5 +1,0 @@
-zank_control:
-  media_player:
-    - name: Living Room TV
-      udp_ip: 192.168.1.10
-      entity_id: media_player.living_room_tv
