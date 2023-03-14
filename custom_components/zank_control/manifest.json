@@ -1,7 +1,7 @@
 {
     "domain": "zank_control",
     "name": "Zank Control",
-    "config_flow": true,
+    "config_flow": false,
     "documentation": "",
     "requirements": [],
     "dependencies": [],
