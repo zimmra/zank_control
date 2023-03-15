@@ -47,6 +47,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 class UDPMediaRemote(MediaPlayerEntity):
     def __init__(self, device_info):
+        _LOGGER.info("Initializing UDPMediaRemote")
         self._name = device_info[CONF_NAME]
         self._ip_address = device_info[CONF_IP_ADDRESS]
         self._state = STATE_UNKNOWN
