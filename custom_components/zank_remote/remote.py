@@ -9,16 +9,16 @@ from homeassistant.components.remote import (
     ATTR_DELAY_SECS,
 )
 from homeassistant.const import CONF_NAME, CONF_IP_ADDRESS
+from homeassistant.helpers import config_entry_platform
 
 _LOGGER = logging.getLogger(__name__)
 
 with open(os.path.join(os.path.dirname(__file__), "commands.json"), "r") as file:
     COMMANDS_DICT = json.load(file)
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    if discovery_info is None:
-        return
-    add_entities([UDPRemote(discovery_info)])
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    remote = UDPRemote(config_entry.data)
+    async_add_entities([remote])
 
 class UDPRemote(RemoteEntity):
     def __init__(self, device_info):
@@ -39,6 +39,7 @@ class UDPRemote(RemoteEntity):
         for _ in range(num_repeats):
             sock.sendto(udp_command.encode(), (self._ip_address, 1028))
             time.sleep(delay_secs)
+        sock.close()
 
     def send_command(self, command, **kwargs):
         num_repeats = kwargs.get(ATTR_NUM_REPEATS, 1)

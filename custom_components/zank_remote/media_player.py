@@ -22,6 +22,7 @@ from homeassistant.const import (
     STATE_PLAYING,
     STATE_UNKNOWN,
 )
+from homeassistant.helpers import config_entry_platform
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,10 +41,9 @@ SUPPORTED_FEATURES = (
     | SUPPORT_VOLUME_STEP
 )
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    if discovery_info is None:
-        return
-    add_entities([UDPMediaRemote(discovery_info)])
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    media_player = UDPMediaRemote(config_entry.data)
+    async_add_entities([media_player])
 
 class UDPMediaRemote(MediaPlayerEntity):
     def __init__(self, device_info):
@@ -71,6 +71,7 @@ class UDPMediaRemote(MediaPlayerEntity):
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.sendto(udp_command.encode(), (self._ip_address, 1028))
+        sock.close()
 
     def turn_on(self):
         self._send_command("power_toggle")
