@@ -1,18 +1,20 @@
-"""The zank_remote component."""
+"""The Zank Remote integration."""
 import logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 DOMAIN = "zank_remote"
-
-PLATFORMS = ["media_player", "remote"]
-
 _LOGGER = logging.getLogger(__name__)
+PLATFORMS = ["remote", "media_player"]
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up the zank_remote component from a config entry."""
+async def async_setup(hass: HomeAssistant, config: dict):
+    """Set up the Zank Remote component."""
     _LOGGER.debug("Setting up zank_remote integration")
+    return True
 
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Set up Zank Remote from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
     for platform in PLATFORMS:
@@ -20,11 +22,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             hass.config_entries.async_forward_entry_setup(entry, platform)
         )
 
-    async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
-        """Handle removal of an entry."""
-        unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-        if unload_ok:
-            hass.data[DOMAIN].pop(entry.entry_id)
-        return unload_ok
-
     return True
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Unload a config entry."""
+    unload_ok = all(
+        await asyncio.gather(
+            *[
+                hass.config_entries.async_forward_entry_unload(entry, platform)
+                for platform in PLATFORMS
+            ]
+        )
+    )
+
+    if unload_ok:
+        hass.data[DOMAIN].pop(entry.entry_id)
+
+    return unload_ok

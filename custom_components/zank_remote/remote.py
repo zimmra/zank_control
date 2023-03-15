@@ -16,9 +16,12 @@ with open(os.path.join(os.path.dirname(__file__), "commands.json"), "r") as file
     COMMANDS_DICT = json.load(file)
 
 async def async_setup_entry(hass, entry, async_add_entities):
-    """Set up the UDPRemote from a config entry."""
-    _LOGGER.debug("Setting up UDPRemote")
-    async_add_entities([UDPRemote(entry.data)])
+    """Set up the remote from a config entry."""
+    _LOGGER.debug("Creating UDPRemote instance")
+    entity = UDPRemote(entry.data)
+    _LOGGER.debug("UDPRemote instance created: %s", entity.name)
+    async_add_entities([entity])
+
 
 
 class UDPRemote(RemoteEntity):
