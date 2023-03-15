@@ -42,6 +42,7 @@ SUPPORTED_FEATURES = (
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the media player from a config entry."""
+    _LOGGER.info("Setting up UDPMediaRemote")
     async_add_entities([UDPMediaRemote(config_entry.data)])
 
 class UDPMediaRemote(MediaPlayerEntity):
