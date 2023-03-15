@@ -40,10 +40,10 @@ SUPPORTED_FEATURES = (
     | SUPPORT_VOLUME_STEP
 )
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up the media player from a config entry."""
-    _LOGGER.info("Setting up UDPMediaRemote")
-    async_add_entities([UDPMediaRemote(config_entry.data)])
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up the UDPMediaRemote from a config entry."""
+    _LOGGER.debug("Setting up UDPMediaRemote")
+    async_add_entities([UDPMediaRemote(entry.data)])
 
 class UDPMediaRemote(MediaPlayerEntity):
     def __init__(self, device_info):
