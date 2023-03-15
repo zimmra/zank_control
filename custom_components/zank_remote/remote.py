@@ -9,7 +9,6 @@ from homeassistant.components.remote import (
     ATTR_DELAY_SECS,
 )
 from homeassistant.const import CONF_NAME, CONF_IP_ADDRESS
-from homeassistant.helpers import config_entry_platform
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -17,8 +16,8 @@ with open(os.path.join(os.path.dirname(__file__), "commands.json"), "r") as file
     COMMANDS_DICT = json.load(file)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    remote = UDPRemote(config_entry.data)
-    async_add_entities([remote])
+    """Set up the remote from a config entry."""
+    async_add_entities([UDPRemote(config_entry.data)])
 
 class UDPRemote(RemoteEntity):
     def __init__(self, device_info):

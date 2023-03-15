@@ -22,7 +22,6 @@ from homeassistant.const import (
     STATE_PLAYING,
     STATE_UNKNOWN,
 )
-from homeassistant.helpers import config_entry_platform
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -42,8 +41,8 @@ SUPPORTED_FEATURES = (
 )
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    media_player = UDPMediaRemote(config_entry.data)
-    async_add_entities([media_player])
+    """Set up the media player from a config entry."""
+    async_add_entities([UDPMediaRemote(config_entry.data)])
 
 class UDPMediaRemote(MediaPlayerEntity):
     def __init__(self, device_info):
